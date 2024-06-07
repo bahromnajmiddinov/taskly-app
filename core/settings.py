@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'social_django',
     'rest_framework_social_oauth2',
     'users',
+    'house',
 ]
 
 AUTH_USER_MODEL = 'users.Profile'

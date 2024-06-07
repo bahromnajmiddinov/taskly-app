@@ -17,8 +17,11 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from users import router as users_api_router
+from house import router as house_api_router
 
 
 auth_api_urlpatterns = [
@@ -31,9 +34,10 @@ if settings.DEBUG:
 api_urlpatterns = [
     path(r'auth/', include(auth_api_urlpatterns)),
     path(r'accounts/', include(users_api_router.routers.urls)),
+    path(r'house/', include(house_api_router.routers.urls)),
 ]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(api_urlpatterns)),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

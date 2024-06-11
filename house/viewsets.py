@@ -1,6 +1,8 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
+
+from django_filters.rest_framework import DjangoFilterBackend
 
 from users.models import Profile
 from .models import House
@@ -12,6 +14,10 @@ class HouseViewSet(viewsets.ModelViewSet):
     queryset = House.objects.all()
     permission_classes = [IsHouseManagerOrNone]
     serializer_class = HouseSerializer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
+    search_fields = ['name', 'description',]
+    ordering_fields = ['point', 'completed_tasks_count', 'notcompleted_tasks_count', 'created']
+    filterset_fields = ['members',]
     
     @action(detail=True, methods=['POST'], name='Join', permission_classes=[])
     def join(self, request, pk=None):
